@@ -5,8 +5,8 @@ services:
       dockerfile: Dockerfile
     container_name: products-php-fpm
     restart: unless-stopped
-    volumes: 
-     - ./:/var/www/app # for dev
+#    volumes: 
+#     - ./:/var/www/app # for dev
     networks:
       - products-network
     environment:
