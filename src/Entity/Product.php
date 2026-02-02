@@ -86,7 +86,7 @@ class Product
         $product = new self();
         $product->name = $dto->name;
         $product->price = $dto->price;
-        $product->isActive = $dto->is_active;
+        $product->isActive = $dto->isActive;
 
         return $product;
     }

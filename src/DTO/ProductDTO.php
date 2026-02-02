@@ -14,7 +14,7 @@ class ProductDTO
         #[Assert\GreaterThan(0)]
         public readonly float $price,
         #[Assert\NotNull]
-        public readonly bool $is_active,
+        public readonly bool $isActive,
     ) {
     }
 }

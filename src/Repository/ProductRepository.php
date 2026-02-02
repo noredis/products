@@ -13,11 +13,25 @@ class ProductRepository extends ServiceEntityRepository implements ProductReposi
         parent::__construct($registry, Product::class);
     }
 
+    public function findById(int $id): ?Product
+    {
+        return $this->findOneBy(['id' => $id]);
+    }
+
     public function save(Product $product): Product
     {
-        $this->getEntityManager()->persist($product);
+        if ($product->getId() === null) {
+            $this->getEntityManager()->persist($product);
+        }
+
         $this->getEntityManager()->flush();
 
         return $product;
+    }
+
+    public function delete(Product $product): void
+    {
+        $this->getEntityManager()->remove($product);
+        $this->getEntityManager()->flush();
     }
 }
