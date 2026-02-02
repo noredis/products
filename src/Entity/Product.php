@@ -2,7 +2,8 @@
 
 namespace App\Entity;
 
-use App\DTO\ProductDTO;
+use App\DTO\ProductRequestDTO;
+use App\DTO\ProductResponseDTO;
 use App\Repository\ProductRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
@@ -81,13 +82,23 @@ class Product
         return $this->createdAt;
     }
 
-    public static function fromDto(ProductDTO $dto): self
+    public static function fromDto(ProductRequestDTO $dto): self
     {
         $product = new self();
         $product->name = $dto->name;
         $product->price = $dto->price;
-        $product->isActive = $dto->isActive;
+        $product->isActive = $dto->is_active;
 
         return $product;
+    }
+
+    public static function toDto(self $product): ProductResponseDTO
+    {
+        return new ProductResponseDTO(
+            id: $product->getId(),
+            name: $product->getName(),
+            price: $product->getPrice(),
+            is_active: $product->isActive(),
+        );
     }
 }

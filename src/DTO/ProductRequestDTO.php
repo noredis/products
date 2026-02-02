@@ -4,7 +4,7 @@ namespace App\DTO;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class ProductDTO
+class ProductRequestDTO
 {
     public function __construct(
         #[Assert\NotBlank(message: 'name is required')]
@@ -14,7 +14,7 @@ class ProductDTO
         #[Assert\GreaterThan(0)]
         public readonly float $price,
         #[Assert\NotNull]
-        public readonly bool $isActive,
+        public readonly bool $is_active,
     ) {
     }
 }

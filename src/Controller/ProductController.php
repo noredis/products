@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\DTO\ProductDTO;
+use App\DTO\ProductRequestDTO;
 use App\Entity\Product;
 use App\Repository\ProductRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,19 +20,19 @@ final class ProductController extends AbstractController
 
     #[Route('/products', name: 'create-product', methods: ['POST'])]
     public function create(
-        #[MapRequestPayload] ProductDTO $request,
+        #[MapRequestPayload] ProductRequestDTO $request,
     ): JsonResponse
     {
         $product = Product::fromDto($request);
 
         $this->repository->save($product);
 
-        return $this->json($product, 201);
+        return new JsonResponse(data: Product::toDto($product), status: 201);
     }
 
     #[Route('/products/{id}', name: 'update-product', methods: ['PUT'], requirements: ['id' => '\d+'])]
     public function update(
-        #[MapRequestPayload] ProductDTO $request,
+        #[MapRequestPayload] ProductRequestDTO $request,
         int $id,
     ): JsonResponse
     {
@@ -41,11 +41,11 @@ final class ProductController extends AbstractController
         $product
             ->setName($request->name)
             ->setPrice($request->price)
-            ->setIsActive($request->isActive);
+            ->setIsActive($request->is_active);
 
         $this->repository->save($product);
 
-        return $this->json($product, 200);
+        return new JsonResponse(data: Product::toDto($product), status: 200);
     }
 
     #[Route('/products/{id}', name: 'get-product', methods: ['GET'], requirements: ['id' => '\d+'])]
@@ -54,7 +54,8 @@ final class ProductController extends AbstractController
     ): JsonResponse
     {
         $product = $this->findById($id);
-        return $this->json($product, 200);
+
+        return new JsonResponse(data: Product::toDto($product), status: 200);
     }
 
     #[Route('/products/{id}', name: 'delete-product', methods: ['DELETE'], requirements: ['id' => '\d+'])]
@@ -66,7 +67,7 @@ final class ProductController extends AbstractController
         
         $this->repository->delete($product);
 
-        return $this->json([], 204);
+        return new JsonResponse(status: 204);
     }
 
     protected function findById(int $id): Product
